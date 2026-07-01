@@ -1,0 +1,372 @@
+/* ── Reset & base ───────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Inter font gives a clean modern dashboard feel */
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f0f2f5;
+  color: #1e293b;
+  /* CSS Grid: sidebar on the left, main content on the right */
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────── */
+.sidebar {
+  background: #0f172a;       /* Dark navy */
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  position: sticky;          /* Stays visible while scrolling */
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Logo / brand area at the top of the sidebar */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #1e293b;
+}
+
+.sidebar-logo .flag {
+  font-size: 1.6rem;
+}
+
+/* Nav links */
+.nav-item {
+  display: block;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: #1e293b;
+  color: #fff;
+}
+
+/* Data source credit pinned to the bottom of the sidebar */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #1e293b;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.sidebar-footer a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.sidebar-footer .licence {
+  opacity: 0.6;
+}
+
+/* ── Main wrapper ───────────────────────────────────────────── */
+/* Flex column so footer stays at the bottom */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Top bar ────────────────────────────────────────────────── */
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;           /* Stays above chart cards when scrolling */
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.topbar h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.topbar p {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 0.1rem;
+}
+
+/* Africa badge in the top-right corner */
+.badge {
+  background: #e8f0fe;
+  color: #1a73e8;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+/* ── Main content padding ───────────────────────────────────── */
+main {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+/* ── Loading state ──────────────────────────────────────────── */
+/* Centred spinner shown while the three API calls are in flight */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: #64748b;
+}
+
+/* CSS border-trick spinning ring */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e2e8f0;
+  border-top-color: #1a73e8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error state ────────────────────────────────────────────── */
+/* Red banner shown if any World Bank fetch fails */
+.error {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  max-width: 560px;
+  margin: 2rem auto;
+}
+
+.error-icon {
+  font-size: 1.8rem;
+}
+
+.error strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.error p {
+  font-size: 0.88rem;
+  opacity: 0.85;
+}
+
+/* ── Utility ────────────────────────────────────────────────── */
+/* Toggled by Dashboard.js to switch between loading / error / dashboard */
+.hidden {
+  display: none !important;
+}
+
+/* ── Stat summary cards ─────────────────────────────────────── */
+/* Three KPI cards in a row above the charts */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* Coloured icon circle on each stat card */
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ── Charts grid ────────────────────────────────────────────── */
+/* Two-column grid; .full-width cards span both columns */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* ── Chart card ─────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Life Expectancy chart spans the full two-column width */
+.card.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Card header: title on the left, chip label on the right */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Coloured pill labels on each card header */
+.chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.chip.blue   { background: #e8f0fe; color: #1a73e8; }
+.chip.green  { background: #e6f4ea; color: #1e8e3e; }
+.chip.orange { background: #fef3e2; color: #e37400; }
+
+/* Canvas fills the card; Chart.js controls the height */
+canvas {
+  width: 100% !important;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+  padding: 0.9rem 1rem;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+footer a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+/* ── Responsive — tablet (≤ 900px) ─────────────────────────── */
+/* Collapse to single-column charts, hide sidebar */
+@media (max-width: 900px) {
+  body {
+    grid-template-columns: 1fr;  /* Remove sidebar column */
+  }
+
+  /* Sidebar slides off-screen by default on mobile */
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 100;
+    transition: left 0.3s ease;
+    width: 240px;
+  }
+
+  /* .sidebar-open toggled by the hamburger button in Dashboard.js */
+  .sidebar.sidebar-open {
+    left: 0;
+  }
+
+  .menu-btn {
+    display: block;  /* Show hamburger on mobile */
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;  /* Stack charts vertically */
+  }
+
+  .card.full-width {
+    grid-column: 1;
+  }
+}
+
+/* ── Responsive — mobile (≤ 480px) ─────────────────────────── */
+@media (max-width: 480px) {
+  .topbar h1 {
+    font-size: 0.95rem;
+  }
+
+  .stat-cards {
+    grid-template-columns: 1fr;  /* Stack stat cards vertically */
+  }
+
+  main {
+    padding: 1rem;
+  }
+}

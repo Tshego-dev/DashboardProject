@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Makes the page scale correctly on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zimbabwe Data Dashboard</title>
+    <!-- Google Fonts for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Chart.js CDN: loaded here so it is available when Dashboard.js runs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+
+    <!-- ── Sidebar navigation ───────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="flag">🇿🇼</span>
+        <span>ZW<strong>Data</strong></span>
+      </div>
+      <nav>
+        <a href="#" class="nav-item active">📊 Overview</a>
+        <a href="#gdpCard" class="nav-item">💰 GDP</a>
+        <a href="#popCard" class="nav-item">👥 Population</a>
+        <a href="#lifeCard" class="nav-item">❤️ Life Expectancy</a>
+      </nav>
+      <!-- Data source credit in sidebar -->
+      <div class="sidebar-footer">
+        <p>Source: <a href="https://data.worldbank.org/country/zimbabwe" target="_blank" rel="noopener">World Bank</a></p>
+        <p class="licence"><a href="https://datacatalog.worldbank.org/public-licenses#cc-by" target="_blank" rel="noopener">CC BY 4.0</a></p>
+      </div>
+    </aside>
+
+    <!-- ── Main content area ─────────────────────────────────── -->
+    <div class="main-wrapper">
+
+      <!-- Top header bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <!-- Hamburger shown on mobile to toggle sidebar -->
+          <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+          <div>
+            <h1>Zimbabwe Economic Dashboard</h1>
+            <p>World Bank open data · Last updated 2024</p>
+          </div>
+        </div>
+        <span class="badge">🌍 Africa</span>
+      </header>
+
+      <main>
+        <!-- Loading state: visible by default, hidden once data arrives -->
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Fetching World Bank data…</p>
+        </div>
+
+        <!-- Error state: hidden by default, shown if any fetch fails -->
+        <div id="error" class="error hidden">
+          <span class="error-icon">⚠️</span>
+          <div>
+            <strong>Failed to load data</strong>
+            <p>Please check your connection and try again.</p>
+          </div>
+        </div>
+
+        <!-- Dashboard content: hidden until data loads successfully -->
+        <div id="dashboard" class="hidden">
+
+          <!-- ── Stat summary cards ──────────────────────────── -->
+          <!-- Populated by Dashboard.js with the latest data point for each indicator -->
+          <section class="stat-cards">
+            <div class="stat-card" id="statGdp">
+              <div class="stat-icon" style="background:#e8f0fe;">💰</div>
+              <div>
+                <p class="stat-label">Latest GDP</p>
+                <p class="stat-value" id="valGdp">—</p>
+              </div>
+            </div>
+            <div class="stat-card" id="statPop">
+              <div class="stat-icon" style="background:#e6f4ea;">👥</div>
+              <div>
+                <p class="stat-label">Population</p>
+                <p class="stat-value" id="valPop">—</p>
+              </div>
+            </div>
+            <div class="stat-card" id="statLife">
+              <div class="stat-icon" style="background:#fef3e2;">❤️</div>
+              <div>
+                <p class="stat-label">Life Expectancy</p>
+                <p class="stat-value" id="valLife">—</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Charts grid ─────────────────────────────────── -->
+          <section class="charts-grid">
+
+            <!-- Chart 1: GDP line chart -->
+            <div class="card" id="gdpCard">
+              <div class="card-header">
+                <h2>GDP Over Time</h2>
+                <span class="chip blue">Current USD</span>
+              </div>
+              <canvas id="gdpChart"></canvas>
+            </div>
+
+            <!-- Chart 2: Population bar chart -->
+            <div class="card" id="popCard">
+              <div class="card-header">
+                <h2>Population Growth</h2>
+                <span class="chip green">Total</span>
+              </div>
+              <canvas id="populationChart"></canvas>
+            </div>
+
+            <!-- Chart 3: Life Expectancy line chart — spans full width -->
+            <div class="card full-width" id="lifeCard">
+              <div class="card-header">
+                <h2>Life Expectancy at Birth</h2>
+                <span class="chip orange">Years</span>
+              </div>
+              <canvas id="lifeExpChart"></canvas>
+            </div>
+
+          </section>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>Data: <a href="https://data.worldbank.org/country/zimbabwe" target="_blank" rel="noopener">World Bank Open Data</a> · Licence: <a href="https://datacatalog.worldbank.org/public-licenses#cc-by" target="_blank" rel="noopener">CC BY 4.0</a></p>
+      </footer>
+    </div>
+
+    <!-- Dashboard.js: fetches World Bank data and renders all three charts -->
+    <script src="Dashboard.js"></script>
+  </body>
+</html>
